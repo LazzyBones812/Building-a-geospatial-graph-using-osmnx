@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Routes in the location</title>
+    {{map.header.render|safe}}
+</head>
+<body>
+    <button id="backButton">В начало</button>
+    <form></form>
+    <fieldset>
+      <legend id="currentMetrics">Учитываемая метрика</legend>
+      <div>
+        <input type="radio" name="metrics" id="noMetrics" value="noMetrics" checked></input>
+        <label for="noMetrics">Без Метрик</label>
+      </div>
+      <div>
+        <input type="radio" name="metrics" id="degree" value="degree"></input>
+        <label for="degree">Degree Centrality</label>
+      </div>
+      <div>
+        <input type="radio" name="metrics" id="closeness" value="closeness"></input>
+        <label for="closeness">Closeness Centrality</label>
+      </div>
+      <div>
+        <input type="radio" name="metrics" id="betweenness" value="betweenness"></input>
+        <label for="betweenness">Betweenness Centrality</label>
+      </div>
+      <div>
+        <input type="radio" name="metrics" id="pagerank" value="pagerank"></input>
+        <label for="pagerank">Page Rank</label>
+      </div>
+      <button id="rebuild">Построить</button>
+    </fieldset>
+    {% if map %}
+
+  	{{map.html.render|safe}}
+    <script>
+    	{{map.script.render|safe}}
+      var currentMetrics = document.URL.substring(document.URL.indexOf("8000/")+5, document.URL.indexOf(","));
+      switch (currentMetrics){
+        case "nometrics":
+          document.getElementById('currentMetrics').textContent = "Учитываемая метрика - Без метрик";
+          break;
+        case "degree":
+          document.getElementById('currentMetrics').textContent = "Учитываемая метрика - Degree Centrality";
+          break;
+        case "closeness":
+          document.getElementById('currentMetrics').textContent = "Учитываемая метрика - Closeness Centrality";
+          break;
+        case "betweenness":
+          document.getElementById('currentMetrics').textContent = "Учитываемая метрика - Betweenness Centrality";
+          break;
+        case "pagerank":
+          document.getElementById('currentMetrics').textContent = "Учитываемая метрика - Page Rank";
+          break;
+      }
+      
+      document.getElementById('backButton').addEventListener('click', function() {
+        const route_url='http://localhost:8000/';
+        window.location.replace(route_url);
+      });
+      document.getElementById('rebuild').addEventListener('click', function(){
+        if(document.getElementById('noMetrics').checked){
+          const route_url = 'http://localhost:8000/nometrics,' + document.URL.substring(document.URL.indexOf(",")+1);
+          window.location.replace(route_url);
+        } else if(document.getElementById('degree').checked){
+          const route_url = 'http://localhost:8000/degree,' + document.URL.substring(document.URL.indexOf(",")+1);
+          window.location.replace(route_url);
+        } else if(document.getElementById('closeness').checked){
+          const route_url = 'http://localhost:8000/closeness,' + document.URL.substring(document.URL.indexOf(",")+1);
+          window.location.replace(route_url);
+        } else if(document.getElementById('betweenness').checked){
+          const route_url = 'http://localhost:8000/betweenness,' + document.URL.substring(document.URL.indexOf(",")+1);
+          window.location.replace(route_url);
+        } else if(document.getElementById('pagerank').checked){
+          const route_url = 'http://localhost:8000/pagerank,' + document.URL.substring(document.URL.indexOf(",")+1);
+          window.location.replace(route_url);
+        }
+
+      });
+    </script>
+    {% endif %}
+</body>
+</html>
